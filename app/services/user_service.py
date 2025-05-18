@@ -33,7 +33,13 @@ def authenticate_user(image_bytes: bytes):
 
 def get_user(user_id):
     """user_id로 회원 정보 조회"""
-    pass
+    db = load_db()
+    user_data = db.get(user_id)
+
+    if user_data:
+        return {"user_id": user_id, "registered_at": user_data["registered_at"]}
+    else:
+        return None  # 사용자 없음
 
 
 def delete_user(user_id):

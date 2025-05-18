@@ -1,4 +1,4 @@
-from app.services.user_service import authenticate_user, register_user
+from app.services.user_service import authenticate_user, get_user, register_user
 
 
 def test_register_user():
@@ -40,3 +40,15 @@ def test_authenticate_unregistered_user(setup_user_db):
 
     # Then: 인증 실패(None 반환) 해야 함
     assert user_id is None
+
+
+def test_get_registered_user(setup_user_db):
+    # Given: 이미 등록된 사용자 ID
+    user_id = "aaron_peirsol"
+
+    # When: 사용자 정보 조회 서비스를 호출
+    user_info = get_user(user_id)
+
+    # Then: 등록 시각 등 사용자 정보를 정확히 반환해야 함
+    assert user_info["user_id"] == user_id
+    assert "registered_at" in user_info
