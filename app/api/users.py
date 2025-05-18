@@ -1,7 +1,7 @@
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from app.models.user import UserResponse
-from app.services.user_service import authenticate_user, register_user
+from app.services.user_service import authenticate_user, get_user, register_user
 
 router = APIRouter()
 
@@ -33,7 +33,12 @@ async def authenticate(image: UploadFile = File(...)):
 @router.get("/users/{user_id}")
 def get_user_info(user_id: str):
     """회원 정보 조회 엔드포인트"""
-    pass
+    user_info = get_user(user_id)
+
+    if user_info is None:
+        raise HTTPException(status_code=404, detail="사용자가 존재하지 않습니다.")
+
+    return user_info
 
 
 @router.delete("/users/{user_id}")

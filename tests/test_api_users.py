@@ -35,3 +35,17 @@ def test_authenticate_user_api(client, setup_user_db):
     assert response.status_code == 200
     data = response.json()
     assert data["user_id"] == "aaron_peirsol"
+
+
+def test_get_registered_user_api(client, setup_user_db):
+    # Given: 등록된 사용자 ID
+    user_id = "aaron_peirsol"
+
+    # When: 회원 조회 API 호출
+    response = client.get(f"/users/{user_id}")
+
+    # Then: 성공적으로 사용자 정보를 반환
+    assert response.status_code == 200
+    data = response.json()
+    assert data["user_id"] == user_id
+    assert "registered_at" in data
